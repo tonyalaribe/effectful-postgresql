@@ -122,7 +122,9 @@ executeMany ::
   Eff es Int64
 executeMany q rows = withConnection $ \conn -> liftIO (PSQL.executeMany conn q rows)
 
--- | Lifted 'PSQL.withTransaction'.
+{- | Lifted 'PSQL.withTransaction'. The statements inside run on the same
+connection as the transaction under every interpreter in this package.
+-}
 withTransaction ::
   (HasCallStack, WithConnection :> es, IOE :> es) => Eff es a -> Eff es a
 withTransaction f =
